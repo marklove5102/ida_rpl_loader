@@ -672,6 +672,9 @@ setSdaBase(LoadedFile &file)
       }
    }
 
+#if IDA_SDK_VERSION >= 800
+   processor_t &ph = PH;
+#endif
    ph.set_idp_options("PPC_SDA_BASE", IDPOPT_NUM, &sdaBase);
    ph.set_idp_options("PPC_TOC", IDPOPT_NUM, &sda2Base);
 }
@@ -680,9 +683,15 @@ static void
 setProcessorOptions()
 {
    set_processor_type("ppc:PAIRED", SETPROC_LOADER);
+#if IDA_SDK_VERSION >= 800
+   inf_set_app_bitness(32);
+#endif
 
    // Enable aggressive LIS/ADDI resolution
    int lisoff = 1;
+#if IDA_SDK_VERSION >= 800
+   processor_t &ph = PH;
+#endif
    ph.set_idp_options("PPC_LISOFF", IDPOPT_BIT, &lisoff);
 }
 
